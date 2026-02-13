@@ -31,7 +31,7 @@ const Quiz = struct {
             var buffer: [1024]u8 = undefined;
             const reader = try root.readLine(gpa, &buffer);
             defer allocator.free(reader);
-            var command:root.Command = root.Command.exit;
+            var command:root.Command = root.Command.greet;
 
             _ = root.matchCommand(&command, reader);
 
@@ -42,6 +42,7 @@ const Quiz = struct {
                 .ls => root.toDo("Create a function that lists all the availble quizes."),
                 .remove => root.toDo("Create a function that removes an exitsting quiz."),
                 .get => root.toDo("Create a function that gets a quiz."),
+                .greet => dbPrint("Enter a command:", .{}),
                 .none => std.debug.print("{s}", .{"Unknown command!\n"})
             };
         }
