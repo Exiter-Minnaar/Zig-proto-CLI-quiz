@@ -1,1 +1,1 @@
-This is still in progress; the code in the src only has a temporary password reader in the console.
+This is a CLI quiz app; run it in the command line interface/terminal.
