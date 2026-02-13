@@ -36,13 +36,13 @@ const Quiz = struct {
             _ = root.matchCommand(&command, reader);
 
             try switch (command) {
-                .exit => break,
                 .create => root.toDo("Create a function that creates a new quiz."),
                 .edit => root.toDo("Create a function that edits an exitsing quiz."),
                 .ls => root.toDo("Create a function that lists all the availble quizes."),
                 .remove => root.toDo("Create a function that removes an exitsting quiz."),
                 .get => root.toDo("Create a function that gets a quiz."),
-                .none => std.debug.print("{s}", .{"Unknown command!\n"})
+                .none => std.debug.print("{s}", .{"Unknown command!\n"}),
+                .exit => break,
             };
         }
     }
