@@ -3,6 +3,11 @@ const dbPrint = std.debug.print;
 const ArrayList = std.ArrayList;
 const root = @import("root.zig");
 
+
+const commandError = error {
+    invalidCommand
+};
+
 const Quiz = struct {
     names: ArrayList([]const u8),
     questions: ArrayList([]const u8),
@@ -16,26 +21,41 @@ const Quiz = struct {
 
     pub fn run(self: *Self, gpa: *std.heap.GeneralPurposeAllocator(.{})) !void {
         _ = self;
-        const allocator = gpa.allocator();
-        dbPrint("Quiz--------parameters-----info\n", .{});
+        dbPrint("              Quiz\ncommands-----parameters-----info\n", .{});
         dbPrint(
-            "commands:\n get <quiz name> gets a quiz.\n ls lists all quizes.\n create <quiz name>\n remove <quiz name>\n edit <quiz name> edit an existing quiz.\n",
+            "get <quiz name> gets a quiz.\n ls lists all quizes.\n create <quiz name>\n remove <quiz name>\n edit <quiz name> edit an existing quiz.\n exit exit the quiz.\n",
             .{},
         );
-        var buffer: [1024]u8 = undefined;
-        const reader = try root.readLine( gpa, &buffer);
-        defer allocator.free(reader);
+        const allocator = gpa.allocator();
+        while (true) {
+            var buffer: [1024]u8 = undefined;
+            const reader = try root.readLine(gpa, &buffer);
+            defer allocator.free(reader);
+            var command:root.Command = root.Command.exit;
+
+            _ = root.matchCommand(&command, reader);
+
+            try switch (command) {
+                .exit => break,
+                .create => root.toDo("Create a function that creates a new quiz."),
+                .edit => root.toDo("Create a function that edits an exitsing quiz."),
+                .ls => root.toDo("Create a function that lists all the availble quizes."),
+                .remove => root.toDo("Create a function that removes an exitsting quiz."),
+                .get => root.toDo("Create a function that gets a quiz."),
+                .none => std.debug.print("{s}", .{"Unknown command!\n"})
+            };
+        }
     }
 
     pub fn init(allocator: std.mem.Allocator) !Self {
         return Self{
-            .names = try ArrayList([]const u8).initCapacity(allocator, 16),
-            .questions = try ArrayList([]const u8).initCapacity(allocator, 16),
-            .multiple_As = try ArrayList([]const u8).initCapacity(allocator, 16),
-            .multiple_Bs = try ArrayList([]const u8).initCapacity(allocator, 16),
-            .multiple_Cs = try ArrayList([]const u8).initCapacity(allocator, 16),
-            .multiple_Ds = try ArrayList([]const u8).initCapacity(allocator, 16),
-            .correctAnswers = try ArrayList(u8).initCapacity(allocator, 16),
+            .names = try ArrayList([]const u8).initCapacity(allocator, 160),
+            .questions = try ArrayList([]const u8).initCapacity(allocator, 160),
+            .multiple_As = try ArrayList([]const u8).initCapacity(allocator, 160),
+            .multiple_Bs = try ArrayList([]const u8).initCapacity(allocator, 160),
+            .multiple_Cs = try ArrayList([]const u8).initCapacity(allocator, 160),
+            .multiple_Ds = try ArrayList([]const u8).initCapacity(allocator, 160),
+            .correctAnswers = try ArrayList(u8).initCapacity(allocator, 0o240), //octal for 160
         };
     }
 
@@ -51,6 +71,8 @@ const Quiz = struct {
 };
 
 pub fn main() !void {
+    _ = try root.toDo("Add a function that handles commands!");
+
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
@@ -66,3 +88,4 @@ pub fn main() !void {
 
     try quiz.run(&gpa); // pass the concrete allocator type
 }
+
