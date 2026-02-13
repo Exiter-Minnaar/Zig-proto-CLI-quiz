@@ -23,7 +23,7 @@ const Quiz = struct {
         _ = self;
         dbPrint("              Quiz\ncommands-----parameters-----info\n", .{});
         dbPrint(
-            "get <quiz name> gets a quiz.\n ls lists all quizes.\n create <quiz name>\n remove <quiz name>\n edit <quiz name> edit an existing quiz.\n exit exit the quiz.\n",
+            " get <quiz name> gets a quiz.\n ls lists all quizes.\n create <quiz name>\n remove <quiz name>\n edit <quiz name> edit an existing quiz.\n exit exits the quiz.\n",
             .{},
         );
         const allocator = gpa.allocator();
@@ -31,7 +31,7 @@ const Quiz = struct {
             var buffer: [1024]u8 = undefined;
             const reader = try root.readLine(gpa, &buffer);
             defer allocator.free(reader);
-            var command:root.Command = root.Command.greet;
+            var command:root.Command = root.Command.none;
 
             _ = root.matchCommand(&command, reader);
 
@@ -42,7 +42,6 @@ const Quiz = struct {
                 .ls => root.toDo("Create a function that lists all the availble quizes."),
                 .remove => root.toDo("Create a function that removes an exitsting quiz."),
                 .get => root.toDo("Create a function that gets a quiz."),
-                .greet => dbPrint("Enter a command:", .{}),
                 .none => std.debug.print("{s}", .{"Unknown command!\n"})
             };
         }

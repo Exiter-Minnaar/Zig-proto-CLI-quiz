@@ -1,7 +1,7 @@
 const std = @import("std");
 const Io = std.Io;
 
-pub const Command = enum { exit, create, remove, ls, edit,get, none, greet };
+pub const Command = enum { exit, create, remove, ls, edit,get, none};
 
 //This is the helper function for reading input and output.
 pub fn readLine(gpa: *std.heap.GeneralPurposeAllocator(.{}), stdin_buffer: []u8) ![]const u8 {
