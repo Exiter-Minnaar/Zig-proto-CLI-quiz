@@ -1,3 +1,4 @@
+Early proto typing.
 const std = @import("std");
 const Io = std.Io;
 const dbPrint = std.debug.print;

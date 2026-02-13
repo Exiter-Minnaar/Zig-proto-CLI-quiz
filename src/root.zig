@@ -1,6 +1,7 @@
 const std = @import("std");
 const Io = std.Io;
 
+//This is the helper function for reading input and output.
 pub fn readLine(gpa: *std.heap.GeneralPurposeAllocator(.{}), stdin_buffer: []u8) ![]const u8 {
 
     const allocator = gpa.allocator();
