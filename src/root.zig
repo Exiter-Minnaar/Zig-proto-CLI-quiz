@@ -18,3 +18,4 @@ pub fn readLine(gpa: *std.heap.GeneralPurposeAllocator(.{}), stdin_buffer: []u8)
     const result = try allocator.dupe(u8, trimmed);
     return result;
 }
+
